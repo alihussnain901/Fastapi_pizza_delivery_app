@@ -18,6 +18,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: PDA-service
+            name: pda-service
             port:
               number: 80
