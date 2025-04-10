@@ -1,4 +1,4 @@
-FROM python:3.12-slim@sha256:abc123def456ghi789jkl012mno345pqrs678tuv901wxyz234abc567def890gh
+FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
