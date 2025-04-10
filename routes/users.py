@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from .. import models, schemas
-from ..database import get_db
-from app import utils
+
+from ..models import model
+from ..models import schemas
+from ..models.database import get_db
+from app.models import utils
 
 router = APIRouter(
     prefix="/users",
@@ -12,7 +14,7 @@ router = APIRouter(
 # Create a new user
 @router.post("/", response_model=schemas.UserOut, status_code=status.HTTP_201_CREATED)
 def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    db_user = db.query(model.User).filter(model.User.email == user.email).first()
     if db_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
     
@@ -21,7 +23,7 @@ def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
     user = user.model_dump()
     user["password"] = hashed_password
 
-    new_user = models.User(**user)
+    new_user = model.User(**user)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -31,7 +33,7 @@ def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
 # Update user 
 @router.put("/{user_id}", response_model=schemas.UserOut)
 def update_user(user_id: int, user: schemas.UpdateUser, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    db_user = db.query(model.User).filter(model.User.id == user_id).first()
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     
@@ -46,7 +48,7 @@ def update_user(user_id: int, user: schemas.UpdateUser, db: Session = Depends(ge
 # Delete user 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    db_user = db.query(model.User).filter(model.User.id == user_id).first()
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     
@@ -58,13 +60,13 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
 # Get all users
 @router.get("/", response_model=list[schemas.UserOut])
 def get_users(db: Session = Depends(get_db)):
-    users = db.query(models.User).all()
+    users = db.query(model.User).all()
     return users
 
 # Get user by ID
 @router.get("/{user_id}", response_model=schemas.UserOut)
 def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
+    user = db.query(model.User).filter(model.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     
