@@ -35,4 +35,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: ghcr.io/alihussnain901/pizza-delivery-app:latest
+        tags: alihussnain901/pizza-delivery-app:latest
