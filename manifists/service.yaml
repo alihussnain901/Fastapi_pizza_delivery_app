@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: PDA-service
+  namespace: default
+spec:
+  selector:
+    app: PDA
+  type: NodePort
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+  - name: PDA-service
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+    nodePort: 30002
