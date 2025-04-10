@@ -55,7 +55,7 @@ spec:
         # - configMapRef:
         #     name:  pda-config
         - secretRef:
-            name:  pda-secret
+            name:  pda-secrets
         ports:
         - containerPort:  8000
           name:  pda
