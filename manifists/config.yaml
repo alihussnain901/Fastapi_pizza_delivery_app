@@ -4,4 +4,4 @@ metadata:
   name: pda-config
   namespace: default
 data:
-  DB_HOST: host.minikube.internal
+  DB_HOST: 192.168.58.255
